@@ -28,4 +28,9 @@ public class UserController
 	{
 		return "updateUser() was called";
 	}
+	
+	public String deleteUser()
+	{
+		return "deleteUser() was called";
+	}
 }
