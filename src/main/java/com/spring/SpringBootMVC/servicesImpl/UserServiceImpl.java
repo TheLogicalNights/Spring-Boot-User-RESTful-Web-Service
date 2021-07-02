@@ -19,6 +19,15 @@ public class UserServiceImpl implements UserService
 		returnValue.setEmail(userObj.getEmail());
 		
 		return returnValue;
+	}
+	@Override
+	public UserModel updateUser(String userId, UserModel userDetails) {
+		returnValue.setUserId(userId);
+		returnValue.setFirstName(userDetails.getFirstName());
+		returnValue.setLastName(userDetails.getLastName());
+		returnValue.setEmail(userDetails.getEmail());
+		
+		return returnValue;
 	} 
 
 }
