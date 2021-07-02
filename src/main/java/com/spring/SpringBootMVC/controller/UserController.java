@@ -26,7 +26,7 @@ public class UserController
 {
 	Map<String, UserModel> user;
 	@Autowired
-	UserServiceImpl userServoceObj;
+	UserServiceImpl userServiceObj;
 	@GetMapping(path="/{userId}")
 	public ResponseEntity<UserModel> getUser(@PathVariable String userId)
 	{
@@ -44,7 +44,7 @@ public class UserController
 							 MediaType.APPLICATION_XML_VALUE})
 	public ResponseEntity<String> createUser(@Valid @RequestBody UserModel userObj)
 	{
-		UserModel returnValue = userServoceObj.createUser(userObj);
+		UserModel returnValue = userServiceObj.createUser(userObj);
 		if(user==null)
 		{
 			user = new HashMap<>();
@@ -53,10 +53,13 @@ public class UserController
 		return new ResponseEntity<String>("User created successfully",HttpStatus.OK);
 	}
 	
-	@PutMapping
-	public String updateUser()
+	@PutMapping(path="/{userId}",consumes = {MediaType.APPLICATION_JSON_VALUE,
+											 MediaType.APPLICATION_XML_VALUE})
+	public ResponseEntity<String> updateUser(@PathVariable String userId,@RequestBody UserModel userDetails)
 	{
-		return "updateUser() was called";
+		UserModel returnValue = userServiceObj.updateUser(userId, userDetails);
+		user.put(userId, returnValue);
+		return new ResponseEntity<String>("User updated successfully",HttpStatus.OK);
 	}
 	
 	public String deleteUser()
