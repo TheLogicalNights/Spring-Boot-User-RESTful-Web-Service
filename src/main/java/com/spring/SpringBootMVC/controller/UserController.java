@@ -24,9 +24,16 @@ public class UserController
 {
 	Map<String, UserModel> user;
 	@GetMapping(path="/{userId}")
-	public String getUser(@PathVariable String userId)
+	public ResponseEntity<UserModel> getUser(@PathVariable String userId)
 	{
-		return "getUser() was called with userId = " + userId;
+		if(user.containsKey(userId))
+		{
+			return new ResponseEntity<UserModel>(user.get(userId),HttpStatus.OK);
+		}
+		else
+		{
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
 	}
 	
 	@PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE,
