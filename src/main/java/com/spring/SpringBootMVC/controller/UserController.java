@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -17,12 +18,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.spring.SpringBootMVC.model.UserModel;
+import com.spring.SpringBootMVC.servicesImpl.UserServiceImpl;
 
 @RestController
 @RequestMapping("/users")
 public class UserController 
 {
 	Map<String, UserModel> user;
+	@Autowired
+	UserServiceImpl userServoceObj;
 	@GetMapping(path="/{userId}")
 	public ResponseEntity<UserModel> getUser(@PathVariable String userId)
 	{
@@ -38,14 +42,9 @@ public class UserController
 	
 	@PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE,
 							 MediaType.APPLICATION_XML_VALUE})
-	public ResponseEntity<String> createUser(@Valid @RequestBody UserModel studentObj)
+	public ResponseEntity<String> createUser(@Valid @RequestBody UserModel userObj)
 	{
-		UserModel returnValue = new UserModel();
-		returnValue.setUserId(studentObj.getUserId());
-		returnValue.setFirstName(studentObj.getFirstName());
-		returnValue.setLastName(studentObj.getLastName());
-		returnValue.setEmail(studentObj.getEmail());
-		
+		UserModel returnValue = userServoceObj.createUser(userObj);
 		if(user==null)
 		{
 			user = new HashMap<>();

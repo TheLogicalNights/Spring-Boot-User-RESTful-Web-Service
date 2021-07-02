@@ -3,6 +3,9 @@ package com.spring.SpringBootMVC.model;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 
+import org.springframework.stereotype.Service;
+
+@Service
 public class UserModel {
 	@NotNull(message = "userId cannot be null")
 	private String userId;
