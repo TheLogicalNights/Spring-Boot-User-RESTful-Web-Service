@@ -3,6 +3,7 @@ package com.spring.SpringBootMVC.controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,5 +21,11 @@ public class UserController
 	public String createUser()
 	{
 		return "createUser() was called";
+	}
+	
+	@PutMapping
+	public String updateUser()
+	{
+		return "updateUser() was called";
 	}
 }
