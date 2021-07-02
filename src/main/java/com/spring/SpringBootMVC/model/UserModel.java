@@ -1,9 +1,17 @@
 package com.spring.SpringBootMVC.model;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+
 public class UserModel {
+	@NotNull(message = "userId cannot be null")
 	private String userId;
+	@NotNull(message = "firstName cannot be null")
 	private String firstName;
+	@NotNull(message = "lastName cannot be null")
 	private String lastName;
+	@NotNull(message = "email cannot be null")
+	@Email(message = "Invalid email id, please enter valid email id")
 	private String email;
 
 	public String getUserId() {

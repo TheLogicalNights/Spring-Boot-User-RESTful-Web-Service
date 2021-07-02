@@ -3,6 +3,8 @@ package com.spring.SpringBootMVC.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +31,7 @@ public class UserController
 	
 	@PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE,
 							 MediaType.APPLICATION_XML_VALUE})
-	public ResponseEntity<String> createUser(@RequestBody UserModel studentObj)
+	public ResponseEntity<String> createUser(@Valid @RequestBody UserModel studentObj)
 	{
 		UserModel returnValue = new UserModel();
 		returnValue.setUserId(studentObj.getUserId());
