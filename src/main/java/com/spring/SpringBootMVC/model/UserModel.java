@@ -1,14 +1,20 @@
 package com.spring.SpringBootMVC.model;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.stereotype.Service;
 
-@Service
+@Entity
 public class UserModel {
-	@NotNull(message = "userId cannot be null")
-	private String userId;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private int userId;
 	@NotNull(message = "firstName cannot be null")
 	private String firstName;
 	@NotNull(message = "lastName cannot be null")
@@ -17,11 +23,26 @@ public class UserModel {
 	@Email(message = "Invalid email id, please enter valid email id")
 	private String email;
 
-	public String getUserId() {
+	public UserModel(int userId, @NotNull(message = "firstName cannot be null") String firstName,
+			@NotNull(message = "lastName cannot be null") String lastName,
+			@NotNull(message = "email cannot be null") @Email(message = "Invalid email id, please enter valid email id") String email) {
+		super();
+		this.userId = userId;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+	}
+
+	public UserModel() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public int getUserId() {
 		return userId;
 	}
 
-	public void setUserId(String userId) {
+	public void setUserId(int userId) {
 		this.userId = userId;
 	}
 
