@@ -1,33 +1,53 @@
 package com.spring.SpringBootMVC.servicesImpl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.spring.SpringBootMVC.model.UserModel;
+import com.spring.SpringBootMVC.repository.UserRepository;
 import com.spring.SpringBootMVC.services.UserService;
 
 @Service
-public class UserServiceImpl implements UserService
-{
+public class UserServiceImpl implements UserService {
 	@Autowired
-	UserModel returnValue;
-	@Override
-	public UserModel createUser(UserModel userObj) {
-		returnValue.setUserId(userObj.getUserId());
-		returnValue.setFirstName(userObj.getFirstName());
-		returnValue.setLastName(userObj.getLastName());
-		returnValue.setEmail(userObj.getEmail());
-		
-		return returnValue;
-	}
-	@Override
-	public UserModel updateUser(String userId, UserModel userDetails) {
-		returnValue.setUserId(userId);
-		returnValue.setFirstName(userDetails.getFirstName());
-		returnValue.setLastName(userDetails.getLastName());
-		returnValue.setEmail(userDetails.getEmail());
-		
-		return returnValue;
-	} 
+	UserRepository userRepositoryObj;
 
+	@Override
+	public Boolean createUser(UserModel userObj) {
+		userRepositoryObj.save(userObj);
+		return true;
+	}
+
+	@Override
+	public List<UserModel> getUsers() {
+		List<UserModel> returnList = (List<UserModel>) userRepositoryObj.findAll();
+		return returnList;
+	}
+
+	@Override
+	public UserModel getUser(int userId) {
+		UserModel returnObj = userRepositoryObj.findById(userId);
+		return returnObj;
+	}
+
+	@Override
+	public Boolean updateUser(int userId, UserModel userDetails) {
+		userDetails.setUserId(userId);
+		userRepositoryObj.save(userDetails);
+		return true;
+	}
+
+	@Override
+	public Boolean deleteUsers() {
+		userRepositoryObj.deleteAll();
+		return null;
+	}
+
+	@Override
+	public Boolean deleteUser(int userId) {
+		userRepositoryObj.deleteById(userId);
+		return null;
+	}
 }
