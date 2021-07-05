@@ -42,12 +42,12 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public Boolean deleteUsers() {
 		userRepositoryObj.deleteAll();
-		return null;
+		return true;
 	}
 
 	@Override
 	public Boolean deleteUser(int userId) {
 		userRepositoryObj.deleteById(userId);
-		return null;
+		return true;
 	}
 }
