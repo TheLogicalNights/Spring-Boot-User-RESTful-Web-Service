@@ -1,8 +1,6 @@
 package com.spring.SpringBootMVC.controller;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,48 +23,78 @@ import com.spring.SpringBootMVC.servicesImpl.UserServiceImpl;
 @RequestMapping("/users")
 public class UserController 
 {
-	Map<String, UserModel> user;
 	@Autowired
 	UserServiceImpl userServiceObj;
+	
 	@GetMapping(path="/{userId}")
-	public ResponseEntity<UserModel> getUser(@PathVariable String userId)
+	public ResponseEntity<UserModel> getUser(@PathVariable int userId)
 	{
-		if(user.containsKey(userId))
-		{
-			return new ResponseEntity<UserModel>(user.get(userId),HttpStatus.OK);
-		}
-		else
-		{
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		}
+		UserModel user = userServiceObj.getUser(userId);
+		return new ResponseEntity<UserModel>(user,HttpStatus.OK);
+	}
+	
+	@GetMapping
+	public ResponseEntity<List<UserModel>> getStudents()
+	{
+		List<UserModel> users = userServiceObj.getUsers();
+		return new ResponseEntity<List<UserModel>>(users,HttpStatus.OK);
 	}
 	
 	@PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE,
 							 MediaType.APPLICATION_XML_VALUE})
 	public ResponseEntity<String> createUser(@Valid @RequestBody UserModel userObj)
 	{
-		UserModel returnValue = userServiceObj.createUser(userObj);
-		if(user==null)
+		Boolean bRet = userServiceObj.createUser(userObj);
+		if(bRet)
 		{
-			user = new HashMap<>();
+			return new ResponseEntity<String>("User created successfully",HttpStatus.OK);
 		}
-		user.put(returnValue.getUserId(), returnValue);
-		return new ResponseEntity<String>("User created successfully",HttpStatus.OK);
+		else
+		{
+			return new ResponseEntity<String>("Unable to crerate user",HttpStatus.NOT_MODIFIED);
+		}
 	}
 	
 	@PutMapping(path="/{userId}",consumes = {MediaType.APPLICATION_JSON_VALUE,
 											 MediaType.APPLICATION_XML_VALUE})
-	public ResponseEntity<String> updateUser(@PathVariable String userId,@RequestBody UserModel userDetails)
+	public ResponseEntity<String> updateUser(@PathVariable int userId,@RequestBody UserModel userDetails)
 	{
-		UserModel returnValue = userServiceObj.updateUser(userId, userDetails);
-		user.put(userId, returnValue);
-		return new ResponseEntity<String>("User updated successfully",HttpStatus.OK);
+		Boolean bRet = userServiceObj.updateUser(userId, userDetails);
+		if(bRet)
+		{
+			return new ResponseEntity<String>("User updated successfully",HttpStatus.OK);
+		}
+		else
+		{
+			return new ResponseEntity<String>("Unable to update user",HttpStatus.NOT_MODIFIED);
+		}
 	}
 	
 	@DeleteMapping(path="/{userId}")
-	public ResponseEntity<String> deleteUser(@PathVariable String userId)
+	public ResponseEntity<String> deleteUser(@PathVariable int userId)
 	{
-		user.remove(userId);
-		return new ResponseEntity<String>("User Deleted Successfully",HttpStatus.OK);
+		Boolean bRet = userServiceObj.deleteUser(userId);
+		if(bRet)
+		{
+			return new ResponseEntity<String>("User deleted successfully",HttpStatus.OK);
+		}
+		else
+		{
+			return new ResponseEntity<String>("Unable to delete user",HttpStatus.NOT_MODIFIED);
+		}
+	}
+	
+	@DeleteMapping
+	public ResponseEntity<String> deleteUsers()
+	{
+		Boolean bRet = userServiceObj.deleteUsers();
+		if(bRet)
+		{
+			return new ResponseEntity<String>("Users deleted successfully",HttpStatus.OK);
+		}
+		else
+		{
+			return new ResponseEntity<String>("Unable to delete users",HttpStatus.NOT_MODIFIED);
+		}
 	}
 }
